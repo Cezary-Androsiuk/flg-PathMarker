@@ -13,10 +13,13 @@
     #define CUS const unsigned short
     #define CB const bool
     /**
-     * @brief 
+     * @brief flg - PathMarker version 2
+     * Stores flags, which can be added in every code stage, if needed. To mark important stuff, exceptions or executed path
      * 
-     * 
-     * 
+     * @param [version]([type][number])
+     * @param version develop version, shows version of software which is currently flagging (most useful in inheritance mechanics)
+     * @param type describes important of flag, comparing to others, flags might be "informative", showing "path" or marking "errors"
+     * @param number number of flag in this version, shows in numeric order where this flag have his description
      */
     class flg_v2{
     protected:
@@ -99,11 +102,11 @@
         this->clear(); // recurse :)
     }
     /**
-     * printing flags on command promnpt if type and version matches given one
+     * prints flags on command prompt if types and version are acceptable, those whose can not be acceptable will be replaced with - or _
      * 
-     * @param description if is not empty "" prints description or name in front of flags
-     * @param types 
-     * @param version 
+     * @param description if is not "" prints additional information about actually printed flags status
+     * @param types only the mentioned types will be acceptable, if not single one was mentioned, all types will be acceptable
+     * @param version only the mentioned versions will be acceptable, if version will be above 0xFFFF all version will be acceptable
      * @return void
      */
     void flg_v2::print(const char* description = "", const std::string& types = "", const unsigned long& version= 0xFFFF+1) const{
@@ -130,14 +133,14 @@
 
     }
     /**
+     * saves flags to file if types and version are acceptable, those whose can not be acceptable will be replaced with - or _
      * 
-     * 
-     * @param path 
-     * @param types 
-     * @param version 
+     * @param path relative path to file where expected flags status should be saved
+     * @param types only the mentioned types will be acceptable, if not single one was mentioned, all types will be acceptable
+     * @param version only the mentioned versions will be acceptable, if version will be above 0xFFFF all version will be acceptable
      * @return void
      */
-    void flg_v2::fileprint(const char* path = "", const std::string& types = "", const unsigned long& version= 0xFFFF+1) const{
+    void flg_v2::fileprint(const char* path, const std::string& types = "", const unsigned long& version= 0xFFFF+1) const{
         // types - if is "" print all types (info, warning, error, ...)
         // version - if it is above 0xFFFF (unsigned short) print all versions if is below then print only those versions
         std::fstream file;
@@ -166,9 +169,9 @@
 
 
     /**
+     * only 4 print raw data about stored flags, just 4 testing use
      * 
-     * 
-     * @param description 
+     * @param description if is not "" prints additional information about actually printed flags status
      * @return void
      */
     void flg_v2::industrialPrint(const char* description = "") const{
@@ -184,9 +187,11 @@
         }while(handle != NULL);
     }
     /**
+     * change number to 4 digited hex string up to 0xFFFF
+     * i know that exists a lot of better ways to do this, but target was to optimize length of hex value depend from the longest one value
+     * but 4 now just changing to hex value, satisfies me, when i will have motivation i will finish this
      * 
-     * 
-     * @param number 
+     * @param number decimal value up to 65535
      * @return max 4 digit hex value as a string
      */
     std::string flg_v2::toHex(CUS& number) const{
@@ -201,6 +206,10 @@
         return hex;
     }
 
+/*
+    all defines shortcuts bellow allows to turn off flgv1 extention in order to reduce compute consumption
+    and change every flgv1 line to comment
+*/
 
     #if flg_status == 0
         #define flg_start //flg_v2 flgObject;
