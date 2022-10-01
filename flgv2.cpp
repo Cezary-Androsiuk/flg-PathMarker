@@ -64,9 +64,9 @@
     /**
      * adding single flag to flags storage
      * 
-     * @param version 
-     * @param type 
-     * @param number 
+     * @param version version of software
+     * @param type type of flag
+     * @param number number of flag in current version
      * @return void
      */
     void flg_v2::add(CUS& version, const char& type, CUS& number){
